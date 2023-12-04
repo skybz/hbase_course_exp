@@ -1,0 +1,5 @@
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' 91829a48c8bd28fe31b3e3b5fd7554ea96ebc84725ff21d67b8342ae9936889a
+91829a48c8bd28fe31b3e3b5fd7554ea96ebc84725ff21d67b8342ae9936889a
+ip     172.17.0.2:2181
+docker inspect 91829a48c8bd28fe31b3e3b5fd7554ea96ebc84725ff21d67b8342ae9936889a | grep -i "ports"
+docker exec -it 91829a48c8bd28fe31b3e3b5fd7554ea96ebc84725ff21d67b8342ae9936889a /bin/bash
