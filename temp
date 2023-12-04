@@ -5,4 +5,8 @@ docker inspect 91829a48c8bd28fe31b3e3b5fd7554ea96ebc84725ff21d67b8342ae9936889a 
 docker exec -it 91829a48c8bd28fe31b3e3b5fd7554ea96ebc84725ff21d67b8342ae9936889a /bin/bash
 
 91829a48c8bd 
-docker cp 91829a48c8bd:/usr/local/hadoop/etc/hadoop/yarn-site.xml /home/skybz/project/hbase_docker
+docker cp bee84de1b731 :/usr/local/hadoop/sbin/start-dfs.sh /home/skybz/project/hbase_course_exp
+
+
+docker cp 你的文件路径 容器长ID:docker容器路径
+docker cp ./docker/hadoop_config/hadoop-env.sh bee84de1b731f539ffe23a6262919bad1a8d308f8c9547e02be78e840f5fa7b0:/usr/local/hadoop/etc/hadoop/hadoop-env.sh

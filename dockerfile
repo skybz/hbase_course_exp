@@ -24,6 +24,21 @@ RUN wget https://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-3.3.1/
 # 设置Hadoop环境变量
 ENV HADOOP_HOME=/usr/local/hadoop
 ENV PATH="$HADOOP_HOME/bin:$PATH"
+ENV PATH="$HADOOP_HOME/sbin:$PATH"
+
+# 复制hadoop配置
+COPY ./docker/hadoop_config/hadoop-env.sh /usr/local/hadoop/etc/hadoop/hadoop-env.sh
+COPY ./docker/hadoop_config/yarn-env.sh /usr/local/hadoop/etc/hadoop/yarn-env.sh
+COPY ./docker/hadoop_config/core-site.xml /usr/local/hadoop/etc/hadoop/core-site.xml
+COPY ./docker/hadoop_config/hdfs-site.xml /usr/local/hadoop/etc/hadoop/hdfs-site.xml
+COPY ./docker/hadoop_config/mapred-site.xml /usr/local/hadoop/etc/hadoop/mapred-site.xml
+COPY ./docker/hadoop_config/yarn-site.xml /usr/local/hadoop/etc/hadoop/yarn-site.xml
+# 设定root用户启动
+COPY ./docker/hadoop_config/start-dfs.sh /usr/local/hadoop/sbin/start-dfs.sh 
+COPY ./docker/hadoop_config/stop-dfs.sh /usr/local/hadoop/sbin/stop-dfs.sh 
+COPY ./docker/hadoop_config/start-yarn.sh /usr/local/hadoop/sbin/start-yarn.sh 
+COPY ./docker/hadoop_config/stop-yarn.sh /usr/local/hadoop/sbin/stop-yarn.sh 
+
 
 # 下载并安装HBase
 RUN wget https://mirrors.tuna.tsinghua.edu.cn/apache/hbase/2.4.17/hbase-2.4.17-bin.tar.gz && \
@@ -37,6 +52,13 @@ ENV PATH="$HBASE_HOME/bin:$PATH"
 
 # 运行SSH服务器
 RUN mkdir /var/run/sshd
+
+# 执行 SSH 密钥生成
+RUN mkdir -p ~/.ssh && ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa && \
+    cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+# 允许 SSH 访问
+RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
 # 开放SSH端口
 EXPOSE 22

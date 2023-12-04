@@ -39,7 +39,7 @@
 # Therefore, the vast majority (BUT NOT ALL!) of these defaults
 # are configured for substitution and not append.  If append
 # is preferable, modify this file accordingly.
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+
 ###
 # Generic settings for HADOOP
 ###
@@ -428,3 +428,7 @@ export HADOOP_OS_TYPE=${HADOOP_OS_TYPE:-$(uname -s)}
 # By default, Hadoop uses jsvc which needs to know to launch a
 # server jvm.
 # export HADOOP_REGISTRYDNS_SECURE_EXTRA_OPTS="-jvm server"
+
+# The java implementation to use.  
+#export JAVA_HOME=${JAVA_HOME}  
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
