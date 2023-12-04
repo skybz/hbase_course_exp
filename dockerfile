@@ -70,4 +70,4 @@ EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
 
 # 暴露HBase服务使用的端口
-EXPOSE 2181 16000 16020
+EXPOSE 9090 

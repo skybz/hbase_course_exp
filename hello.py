@@ -1,26 +1,48 @@
 import happybase
 
 def connect_to_hbase():
-    # HBase连接信息
-    hbase_host = '172.17.0.2'  # 替换为您HBase容器的IP地址
-    hbase_port = 9090  # HBase默认端口
+    try:
+        # 连接 HBase
+        connection = happybase.Connection('0.0.0.0', port=9090)  
+        connection.open()
+        print("Connected to HBase")
+        
+        # 创建表
+        table_name = 'my_table'
+        families = {
+            'cf1': dict(),  # 列族名称
+            # 可以添加更多的列族，例如 'cf2': dict(), 'cf3': dict()
+        }
 
-    # 建立HBase连接
-    connection = happybase.Connection(host=hbase_host, port=hbase_port)
+        if table_name.encode() not in connection.tables():
+            connection.create_table(table_name, families)
+            print(f"Table '{table_name}' created")
+        else:
+            print(f"Table '{table_name}' already exists")
+        
+        # 获取表对象
+        table = connection.table(table_name)
 
-    # 在连接上打开一个表
-    table_name = b'my_table'  # 替换为您要连接的HBase表名
-    table = connection.table(table_name)
+        # 插入数据
+        row_key = 'row1'
+        data = {
+            'cf1:column1': 'value1',
+            'cf1:column2': 'value2',
+            # 可以添加更多列，例如 'cf1:column3': 'value3'
+        }
+        table.put(row_key, data)
+        print("Data inserted")
 
-    # 示例：执行一些操作
-    # 获取一行数据
-    row_key = b'row_key_here'  # 替换为您要获取的行键
-    data = table.row(row_key)
+        # 获取数据
+        row = table.row(row_key)
+        print(f"Retrieved row '{row_key}': {row}")
 
-    # 打印获取到的数据
-    print(f"Data for row key {row_key}: {data}")
+        # 关闭连接
+        connection.close()
+        print("Connection to HBase closed")
 
-    # 关闭连接
-    connection.close()
+    except Exception as e:
+        print(f"Error: {e}")
 
-connect_to_hbase()
+if __name__ == "__main__":
+    connect_to_hbase()

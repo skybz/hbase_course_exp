@@ -5,7 +5,7 @@ skybz
 
 ```shell
 docker build -t hadoop-hbase-image .
-docker run -d -p 2222:22 --name hadoop-hbase-container hadoop-hbase-image
+docker run -d -p 2222:22 -p 9090:9090 --name hadoop-hbase-container hadoop-hbase-image
 docker ps //看id
 docker exec -it <id> /bin/bash //ssh连接进去用终端 
 ```
@@ -14,5 +14,6 @@ docker exec -it <id> /bin/bash //ssh连接进去用终端
 ```shell
 hadoop namenode -format
 start-dfs.sh
-start-hbase.sh
+start-hbase.sh  //(输yes)
+hbase-daemon.sh start thrift
 ```
