@@ -23,7 +23,7 @@ RUN wget https://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-3.3.1/
 
 # 设置Hadoop环境变量
 ENV HADOOP_HOME=/usr/local/hadoop
-ENV PATH="$HADOOP_HOME/sbin:$PATH"
+ENV PATH="$HADOOP_HOME/bin:$PATH"
 
 # 下载并安装HBase
 RUN wget https://mirrors.tuna.tsinghua.edu.cn/apache/hbase/2.4.17/hbase-2.4.17-bin.tar.gz && \
