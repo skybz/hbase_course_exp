@@ -39,6 +39,15 @@ COPY ./docker/hadoop_config/stop-dfs.sh /usr/local/hadoop/sbin/stop-dfs.sh
 COPY ./docker/hadoop_config/start-yarn.sh /usr/local/hadoop/sbin/start-yarn.sh 
 COPY ./docker/hadoop_config/stop-yarn.sh /usr/local/hadoop/sbin/stop-yarn.sh 
 
+# 下载并安装ZooKeeper
+RUN wget https://downloads.apache.org/zookeeper/zookeeper-3.7.0/apache-zookeeper-3.7.0-bin.tar.gz && \
+    tar -xzvf apache-zookeeper-3.7.0-bin.tar.gz && \
+    mv apache-zookeeper-3.7.0 /usr/local/zookeeper && \
+    rm apache-zookeeper-3.7.0-bin.tar.gz
+
+# 设置ZooKeeper环境变量
+ENV ZOOKEEPER_HOME=/usr/local/zookeeper
+ENV PATH="$ZOOKEEPER_HOME/bin:$PATH"
 
 # 下载并安装HBase
 RUN wget https://mirrors.tuna.tsinghua.edu.cn/apache/hbase/2.4.17/hbase-2.4.17-bin.tar.gz && \
