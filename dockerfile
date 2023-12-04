@@ -33,21 +33,11 @@ COPY ./docker/hadoop_config/core-site.xml /usr/local/hadoop/etc/hadoop/core-site
 COPY ./docker/hadoop_config/hdfs-site.xml /usr/local/hadoop/etc/hadoop/hdfs-site.xml
 COPY ./docker/hadoop_config/mapred-site.xml /usr/local/hadoop/etc/hadoop/mapred-site.xml
 COPY ./docker/hadoop_config/yarn-site.xml /usr/local/hadoop/etc/hadoop/yarn-site.xml
-# 设定root用户启动
 COPY ./docker/hadoop_config/start-dfs.sh /usr/local/hadoop/sbin/start-dfs.sh 
 COPY ./docker/hadoop_config/stop-dfs.sh /usr/local/hadoop/sbin/stop-dfs.sh 
 COPY ./docker/hadoop_config/start-yarn.sh /usr/local/hadoop/sbin/start-yarn.sh 
 COPY ./docker/hadoop_config/stop-yarn.sh /usr/local/hadoop/sbin/stop-yarn.sh 
 
-# 下载并安装ZooKeeper
-RUN wget https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.7.2/apache-zookeeper-3.7.2-bin.tar.gz && \
-    tar -xzvf apache-zookeeper-3.7.2-bin.tar.gz && \
-    mv apache-zookeeper-3.7.2 /usr/local/zookeeper && \
-    rm apache-zookeeper-3.7.2-bin.tar.gz
-
-# 设置ZooKeeper环境变量
-ENV ZOOKEEPER_HOME=/usr/local/zookeeper
-ENV PATH="$ZOOKEEPER_HOME/bin:$PATH"
 
 # 下载并安装HBase
 RUN wget https://mirrors.tuna.tsinghua.edu.cn/apache/hbase/2.4.17/hbase-2.4.17-bin.tar.gz && \
@@ -58,6 +48,10 @@ RUN wget https://mirrors.tuna.tsinghua.edu.cn/apache/hbase/2.4.17/hbase-2.4.17-b
 # 设置HBase环境变量
 ENV HBASE_HOME=/usr/local/hbase
 ENV PATH="$HBASE_HOME/bin:$PATH"
+
+# 复制hadoop配置
+COPY ./docker/hbase_config/hbase-env.sh /usr/local/hbase/conf/hbase-env.sh
+COPY ./docker/hbase_config/hbase-site.xml /usr/local/hbase/conf/hbase-site.xml
 
 # 运行SSH服务器
 RUN mkdir /var/run/sshd

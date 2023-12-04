@@ -10,8 +10,9 @@ docker ps //看id
 docker exec -it <id> /bin/bash //ssh连接进去用终端 
 ```
 
-#### 启动hadoop
+#### 启动hadoop和hbase
 ```shell
 hadoop namenode -format
 start-dfs.sh
+start-hbase.sh
 ```
