@@ -17,3 +17,9 @@ start-dfs.sh
 start-hbase.sh  //(输yes)
 hbase-daemon.sh start thrift
 ```
+
+### 启动python程序连接hbase
+```shell
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id //查对应的ip
+
+```

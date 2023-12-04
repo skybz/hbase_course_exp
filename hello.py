@@ -3,7 +3,7 @@ import happybase
 def connect_to_hbase():
     try:
         # 连接 HBase
-        connection = happybase.Connection('0.0.0.0', port=9090)  
+        connection = happybase.Connection('172.17.0.2', port=9090)  # ip 用readme中指令查 
         connection.open()
         print("Connected to HBase")
         
