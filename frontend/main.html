@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>搜索页面</title>
+</head>
+<body>
+    <input type="text" id="searchInput">
+    <button onclick="search()">搜索</button>
+
+    <div id="searchResults">
+        <!-- 搜索结果将显示在这里 -->
+    </div>
+
+    <script>
+        function search() {
+            const searchTerm = document.getElementById('searchInput').value;
+
+            // 发送搜索请求到后端
+            fetch(`/search?query=${searchTerm}`)
+                .then(response => response.json())
+                .then(data => {
+                    // 处理从后端返回的数据并显示在页面上
+                    displaySearchResults(data);
+                })
+                .catch(error => {
+                    console.error('搜索出错：', error);
+                });
+        }
+
+        function displaySearchResults(results) {
+            const searchResultsDiv = document.getElementById('searchResults');
+            // 清空之前的搜索结果
+            searchResultsDiv.innerHTML = '';
+
+            // 将结果显示在页面上
+            results.forEach(result => {
+                const resultElement = document.createElement('p');
+                resultElement.textContent = result;
+                searchResultsDiv.appendChild(resultElement);
+            });
+        }
+    </script>
+</body>
+</html>
