@@ -16,10 +16,10 @@ ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 ENV PATH="$JAVA_HOME/bin:${PATH}"
 
 # 下载并安装Hadoop
-RUN wget https://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-3.3.1/hadoop-3.3.1.tar.gz && \
-    tar -xzvf hadoop-3.3.1.tar.gz && \
-    mv hadoop-3.3.1 /usr/local/hadoop && \
-    rm hadoop-3.3.1.tar.gz
+RUN wget https://mirrors.ustc.edu.cn/apache/hadoop/common/hadoop-3.3.5/hadoop-3.3.5.tar.gz && \
+    tar -xzvf hadoop-3.3.5.tar.gz && \
+    mv hadoop-3.3.5 /usr/local/hadoop && \
+    rm hadoop-3.3.5.tar.gz
 
 # 设置Hadoop环境变量
 ENV HADOOP_HOME=/usr/local/hadoop
