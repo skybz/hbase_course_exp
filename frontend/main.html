@@ -16,7 +16,7 @@
             const searchTerm = document.getElementById('searchInput').value;
 
             // 发送搜索请求到后端
-            fetch(`/search?query=${searchTerm}`)
+            fetch(`http://192.168.67.128:5000/search?query=${searchTerm}`)
                 .then(response => response.json())
                 .then(data => {
                     // 处理从后端返回的数据并显示在页面上
