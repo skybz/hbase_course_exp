@@ -28,17 +28,47 @@
         }
 
         function displaySearchResults(results) {
-            const searchResultsDiv = document.getElementById('searchResults');
-            // 清空之前的搜索结果
-            searchResultsDiv.innerHTML = '';
+    const searchResultsDiv = document.getElementById('searchResults');
+    // 清空之前的搜索结果
+    searchResultsDiv.innerHTML = '';
 
-            // 将结果显示在页面上
-            results.forEach(result => {
-                const resultElement = document.createElement('p');
-                resultElement.textContent = result;
-                searchResultsDiv.appendChild(resultElement);
-            });
-        }
+    // 创建表格
+    const table = document.createElement('table');
+    table.border = '1'; // 添加表格边框
+
+    // 创建表头
+    const headerRow = table.insertRow();
+    const headers = ['链接', 'Data'];
+    headers.forEach(headerText => {
+        const header = document.createElement('th');
+        header.textContent = headerText;
+        headerRow.appendChild(header);
+    });
+
+    // 添加数据行到表格中
+    results.forEach(result => {
+        const rowData = result.split(', ');
+        const row = table.insertRow();
+        
+        rowData.forEach(cellData => {
+            const cell = document.createElement('td');
+            if (cellData.startsWith('链接:')) {
+                const linkData = cellData.split(': ')[1];
+                const linkElement = document.createElement('a');
+                linkElement.href = linkData.split(', ')[0].replace('链接: ', '');
+                linkElement.textContent = '链接';
+                linkElement.target = '_blank';
+                cell.appendChild(linkElement);
+            } else {
+                cell.textContent = cellData.replace('Data: ', '');
+            }
+            row.appendChild(cell);
+        });
+    });
+
+    // 将表格添加到页面上
+    searchResultsDiv.appendChild(table);
+}
     </script>
 </body>
 </html>

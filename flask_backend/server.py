@@ -19,26 +19,22 @@ def search():
 
     results = {}
     return_result = []
-    for key, _ in table.scan():  # 只需要行键，不需要数据内容
+    for key, _ in table.scan():  # 遍历表中的每一行
         row_key = key.decode()  # 将字节型的行键解码为字符串
 
-        # 使用 row() 方法获取指定行键的数据
-        row_data = table.row(row_key, columns=[b'cf1:title'])  # 获取指定列的数据
+        # 使用 row() 方法获取整行数据
+        row_data = table.row(row_key)  # 获取整行数据，包括所有列
 
-        # 如果 cf1:title 列存在并包含特定子串，将行键和对应数据存储在结果中
-        if b'cf1:title' in row_data and query_string in row_data[b'cf1:title'].decode('utf-8'):
-            results[row_key] = row_data
+        # 如果行中包含特定子串，将行键和对应数据存储在结果中
+        if any(query_string in value.decode('utf-8') for value in row_data.values()):
+            # 在这里，仅保留字典中的值部分
+            results[row_key] = {k.decode('utf-8'): v.decode('utf-8') for k, v in row_data.items()}
 
-    # 在循环中将字节串解码为可读的字符串
+    # 在循环中将字典中的值提取出来，以显示在返回结果中
     for key, data in results.items():
-        
-        # 将数据中的字节串转换为字节形式的字符串，然后解码为可读的字符串
-        decoded_data = {k.decode('utf-8'): str(v).encode().decode('unicode-escape').encode('raw_unicode_escape').decode() for k, v in data.items()}
+        return_result.append(f"链接: {key}, Data: {data}")
 
-        return_result.append(f"链接: {row_key}, Data: {decoded_data}")
-
-
-    
+    print(return_result)
     return return_result
 
 if __name__ == '__main__':
