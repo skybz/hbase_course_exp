@@ -22,4 +22,12 @@ hbase-daemon.sh start thrift
 ```shell
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id //查对应的ip
 
+#插入数据
+cd data_insert
+python hello.py
+cd ..
+
+python ./flask_backend/server.py
+#用浏览器打开前端的页面即可
+
 ```
