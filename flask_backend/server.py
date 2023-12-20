@@ -17,24 +17,26 @@ def search():
     query_string = request.args.get('query')  # 获取查询参数
     print(query_string)
 
-    results = {}
-    return_result = []
-    for key, _ in table.scan():  # 遍历表中的每一行
-        row_key = key.decode()  # 将字节型的行键解码为字符串
-
-        # 使用 row() 方法获取整行数据
-        row_data = table.row(row_key)  # 获取整行数据，包括所有列
-
-        # 如果行中包含特定子串，将行键和对应数据存储在结果中
-        if any(query_string in value.decode('utf-8') for value in row_data.values()):
-            # 在这里，仅保留字典中的值部分
+    if query_string is None or query_string == '':
+        results = {}
+        for key, row_data in table.scan():  # 遍历表中的每一行
+            row_key = key.decode()  # 将字节型的行键解码为字符串
             results[row_key] = {k.decode('utf-8'): v.decode('utf-8') for k, v in row_data.items()}
+    else:
+        results = {}
+        for key, row_data in table.scan():  # 遍历表中的每一行
+            row_key = key.decode()  # 将字节型的行键解码为字符串
+
+            # 使用 row() 方法获取整行数据
+            row_data = table.row(row_key)  # 获取整行数据，包括所有列
+
+            # 如果行中包含特定子串，将行键和对应数据存储在结果中
+            if any(query_string in value.decode('utf-8') for value in row_data.values()):
+                results[row_key] = {k.decode('utf-8'): v.decode('utf-8') for k, v in row_data.items()}
 
     # 在循环中将字典中的值提取出来，以显示在返回结果中
-    for key, data in results.items():
-        return_result.append(f"链接: {key}, Data: {data}")
+    return_result = [f"链接: {key}, Data: {data}" for key, data in results.items()]
 
-    print(return_result)
     return jsonify(return_result)
 
 if __name__ == '__main__':

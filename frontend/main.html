@@ -7,6 +7,10 @@
     <input type="text" id="searchInput">
     <button onclick="search()">搜索</button>
 
+    <div>
+        <p id="resultCount">结果数量: 0</p>
+    </div>
+
     <div id="searchResults">
         <!-- 搜索结果将显示在这里 -->
     </div>
@@ -15,8 +19,8 @@
         function search() {
             const searchTerm = document.getElementById('searchInput').value;
 
-            // 发送搜索请求到后端
-            fetch(`http://192.168.50.128:5000/search?query=${searchTerm}`)
+            // 发送搜索请求到后端服务器运行的ip上
+            fetch(`http://192.168.67.128:5000/search?query=${searchTerm}`)
                 .then(response => response.json())
                 .then(data => {
                     // 处理从后端返回的数据并显示在页面上
@@ -28,10 +32,12 @@
         }
 
         function displaySearchResults(results) {
-    const searchResultsDiv = document.getElementById('searchResults');
-    // 清空之前的搜索结果
-    searchResultsDiv.innerHTML = '';
+            const searchResultsDiv = document.getElementById('searchResults');
+            // 清空之前的搜索结果
+            searchResultsDiv.innerHTML = '';
 
+            const resultCount = document.getElementById('resultCount');
+            resultCount.textContent = `结果数量: ${results.length}`; // 更新结果数量
     // 创建表格
     const table = document.createElement('table');
     table.border = '1'; // 添加表格边框
