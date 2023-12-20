@@ -35,7 +35,7 @@ def search():
         return_result.append(f"链接: {key}, Data: {data}")
 
     print(return_result)
-    return return_result
+    return jsonify(return_result)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

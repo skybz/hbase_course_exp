@@ -16,7 +16,7 @@
             const searchTerm = document.getElementById('searchInput').value;
 
             // 发送搜索请求到后端
-            fetch(`http://192.168.67.128:5000/search?query=${searchTerm}`)
+            fetch(`http://192.168.50.128:5000/search?query=${searchTerm}`)
                 .then(response => response.json())
                 .then(data => {
                     // 处理从后端返回的数据并显示在页面上
@@ -38,7 +38,7 @@
 
     // 创建表头
     const headerRow = table.insertRow();
-    const headers = ['链接', 'Data'];
+    const headers = ['链接', '日期', '标题'];
     headers.forEach(headerText => {
         const header = document.createElement('th');
         header.textContent = headerText;
@@ -49,9 +49,14 @@
     results.forEach(result => {
         const rowData = result.split(', ');
         const row = table.insertRow();
-        
+
+        // Create an object to store data key-value pairs
+        const dataObject = {};
+
         rowData.forEach(cellData => {
             const cell = document.createElement('td');
+
+            // Check if the cell data starts with '链接:'
             if (cellData.startsWith('链接:')) {
                 const linkData = cellData.split(': ')[1];
                 const linkElement = document.createElement('a');
@@ -60,11 +65,33 @@
                 linkElement.target = '_blank';
                 cell.appendChild(linkElement);
             } else {
-                cell.textContent = cellData.replace('Data: ', '');
+                // If not a link, check if it starts with 'Data:'
+                const cleanData = cellData.replace('Data: ', '');
+                const [key, value] = cleanData.split(': ');
+                
+                // Store key-value pairs in the dataObject
+                dataObject[key] = value;
+
+                // Display data in the cell
+                cell.textContent = value;
             }
+
             row.appendChild(cell);
         });
+
+        // Extract and display publish_date
+        const publishDateCell = document.createElement('td');
+        const rawPublishDate = dataObject['cf1:publish_date'] || '';
+        publishDateCell.textContent = rawPublishDate;
+        row.appendChild(publishDateCell);
+
+        // Extract and display title
+        const titleCell = document.createElement('td');
+        const rawTitle = dataObject['cf1:title'] || '';
+        titleCell.textContent = rawTitle;
+        row.appendChild(titleCell);
     });
+
 
     // 将表格添加到页面上
     searchResultsDiv.appendChild(table);
