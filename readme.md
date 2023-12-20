@@ -14,6 +14,7 @@ docker exec -it <id> /bin/bash //ssh连接进去用终端
 ```shell
 hadoop namenode -format
 start-dfs.sh
+start-yarn.sh
 start-hbase.sh  //(输yes)
 hbase-daemon.sh start thrift
 ```

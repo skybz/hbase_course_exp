@@ -38,7 +38,20 @@
     only and __should not be used in production!__
 
     See also https://hbase.apache.org/book.html#standalone_dist
+    下面两条解除了安全验证，一般要禁止
   -->
+  <property>
+    <name>hbase.security.authorization</name>
+    <value>false</value>
+</property>
+<property>
+    <name>hbase.security.authentication</name>
+    <value>simple</value>
+</property>
+  <property>
+        <name>hbase.unsafe.stream.capability.enforce</name>
+        <value>true</value>
+  </property>
   <property>
     <name>hbase.cluster.distributed</name>
     <value>true</value>

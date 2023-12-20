@@ -1,5 +1,8 @@
-# 使用基于Debian的官方Docker镜像
+# 使用基于Debian的官方Docker镜像，并替换为国内镜像源
 FROM debian:bullseye
+
+RUN sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list && \
+    sed -i 's/security.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 
 # 安装Java、SSH、wget等必要的工具
 RUN apt-get update && apt-get install -y \
@@ -9,8 +12,6 @@ RUN apt-get update && apt-get install -y \
     rsync \
     tar \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
 # 设置JAVA_HOME环境变量
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 ENV PATH="$JAVA_HOME/bin:${PATH}"
