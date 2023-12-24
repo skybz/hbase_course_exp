@@ -72,4 +72,8 @@
        <name>hbase.zookeeper.property.dataDir</name>
        <value>/root/data/hbase/zookeeper</value>
   </property>
+  <property>
+       <name>hbase.thrift.server.socket.read.timeout</name>
+       <value>0</value>
+  </property>
 </configuration>
